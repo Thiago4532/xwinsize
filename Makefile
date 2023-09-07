@@ -18,7 +18,7 @@ clean:
 	@echo cleaning
 	rm -f xwinsize ${OBJ}
 
-install:
+install: xwinsize
 	@echo installing xwinsize to ${DESTDIR}${PREFIX}/bin...
 	@mkdir -p ${DESTDIR}${PREFIX}/bin
 	@cp -f xwinsize ${DESTDIR}${PREFIX}/bin
