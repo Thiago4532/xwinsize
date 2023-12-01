@@ -67,9 +67,10 @@ Window select_window_by_id(char* id) {
         die("id must receive a parameter");
 
     char* endptr;
+    size_t id_len = strlen(id);
 
     Window win;
-    if (id[0] == '0' && (id[1] == 'x' || id[1] == 'X')) { // reading hexadecimal
+    if (id_len > 1 && id[0] == '0' && (id[1] == 'x' || id[1] == 'X')) { // reading hexadecimal
         win = strtoul(id + 2, &endptr, 16);
     } else {
         win = strtoul(id, &endptr, 10);
