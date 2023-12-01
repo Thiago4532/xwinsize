@@ -41,23 +41,25 @@ void close_display() {
     dpy = NULL;
 }
 
-void usage() {
-    fprintf(stderr, "usage: xwinsize <window option> [options ...]\n");
-    fprintf(stderr, "You must specify one of the following window options:\n");
-    fprintf(stderr, "    --name <window_name>: Select the window with the specified name\n");
-    fprintf(stderr, "    --id <window_id>: Select the window with the specified id\n");
-    fprintf(stderr, "    --root: Select the root window\n");
-    fprintf(stderr, "\n");
-    fprintf(stderr, "The following options are optional:\n");
-    fprintf(stderr, "    --monitor|-m: Keep monitoring the window size forever, printing it everytime it changes\n");
-    fprintf(stderr, "    --help|-h: Print the command line usage\n");
+void usage(bool error) {
+    FILE* out = error ? stderr : stdout;
+
+    fprintf(out, "usage: xwinsize <window option> [options ...]\n");
+    fprintf(out, "You must specify one of the following window options:\n");
+    fprintf(out, "    --name <window_name>: Select the window with the specified name\n");
+    fprintf(out, "    --id <window_id>: Select the window with the specified id\n");
+    fprintf(out, "    --root: Select the root window\n");
+    fprintf(out, "\n");
+    fprintf(out, "The following options are optional:\n");
+    fprintf(out, "    --monitor|-m: Keep monitoring the window size forever, printing it everytime it changes\n");
+    fprintf(out, "    --help|-h: Print the command line usage\n");
     exit(1);
 }
 
 // Same thing as panic, but print usage before exiting the program
 #define die(fmt, ...) do { \
     fprintf(stderr, "xwinsize: " fmt "\n\n", ##__VA_ARGS__); \
-    usage(); \
+    usage(true); \
 } while(0)
 
 Window select_window_by_id(char* id) {
@@ -159,7 +161,7 @@ int main(int argc, char* argv[]) {
         } else if (strcmp(argv[i], "--monitor") == 0 || strcmp(argv[i], "-m") == 0) {
             monitor = true;
         } else if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0) {
-            usage();
+            usage(false);
         } else {
             die("unrecognized argument: %s", argv[i]);
         }
